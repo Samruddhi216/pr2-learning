@@ -1,4 +1,8 @@
-on: pull_ request #need to add a permissions for write mode
+name: Example PR Comment
+
+on:
+  pull_request:
+ 
 jobs:
  example_comment_pr: 
   permissions: write-all
@@ -11,7 +15,7 @@ jobs:
    - name: Comment PR
      uses: thollander/actions-comment-pull-request@v1
      with: 
-      message: /
-       I appreciate your updates!  :wave:
-      reactions: eyes, rocket
-      GITHUB_TOKEN: $11 secrets.GITHUB_TOKEN }}
+       message: "I appreciate your updates! :wave:"
+       reactions: eyes, rocket
+
+       token: ${{ secrets.GITHUB_TOKEN }}
