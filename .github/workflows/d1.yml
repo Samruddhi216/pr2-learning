@@ -1,0 +1,38 @@
+name: Commit Timestamp with PR Comment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  commit-timestamp:
+    runs-on: ubuntu-latest  # Specify a supported runner for clarity
+
+    steps:
+      - uses: actions/checkout@v4  # Checkout the repository code
+
+      - name: Get commit timestamp
+        run: |
+          HASH=$(git rev-parse HEAD)
+          TIMESTAMP=$(git show -s --format=%ci $HASH)
+
+          # Format timestamp for readability (optional)
+          FORMATTED_TIMESTAMP=$(date -d "$TIMESTAMP" +"%Y-%m-%d %H:%M:%S %Z")
+
+          echo "Commit Timestamp (ISO 8601): $TIMESTAMP"
+          echo "Formatted Timestamp: $FORMATTED_TIMESTAMP"
+
+      - name: Add comment to PR
+        uses: peter-evans/create-comment@v2  # Use a dedicated action for commenting
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # Access token with write:pull_request permission
+          issue-number: ${{ github.event.number }}  # Reference the current pull request
+          body: |
+            **Commit details:**
+            - Date: ${{ steps.get-timestamp.outputs.DATE }}
+            - Time: ${{ steps.get-timestamp.outputs.TIME }}
+            - Offset: ${{ steps.get-timestamp.outputs.OFFSET }} (optional)
+
+            **Formatted Timestamp:**
+            - ${{ steps.get-timestamp.outputs.FORMATTED_TIMESTAMP }} (optional, customize format)
