@@ -24,9 +24,9 @@ jobs:
           echo "Formatted Timestamp: $FORMATTED_TIMESTAMP"
 
       - name: Add comment to PR
-        uses: peter-evans/create-comment@v2  # Use a dedicated action for commenting
+        uses: Samruddhi216/pr2-learning@v2  # Use a dedicated action for commenting
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # Access token with write:pull_request permission
+          token: ${{ secrets.GITHUBTOKEN }}  # Access token with write:pull_request permission
           issue-number: ${{ github.event.number }}  # Reference the current pull request
           body: |
             **Commit details:**
